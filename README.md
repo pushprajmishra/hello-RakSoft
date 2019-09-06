@@ -1,37 +1,27 @@
-# hello-RakSoft
-Fsm21
-hello friends, I have sent the some files in github.....
+# Fsm21
 
-sql file....
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.1.1.
 
-truncate table po cascade;
-ALTER TABLE po_product DROP CONSTRAINT po_product_invoice_fk;
-ALTER TABLE po_product DROP column invoice_no;
-ALTER TABLE po DROP column invoice_no cascade;
-alter table po add column invoice_no text;
-alter table po_product add column invoice_no text;
-ALTER TABLE po_product ADD CONSTRAINT po_product_invoice_fk FOREIGN KEY (invoice_no) 
-REFERENCES po (nvoice_no) ON UPDATE CASCADE ON DELETE CASCADE;
--------------------------------------------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION invoice_no_generator()
-    RETURNS trigger
-    LANGUAGE 'plpgsql'
-    COST 100
-    VOLATILE NOT LEAKPROOF
-AS $BODY$
-DECLARE
- chars text[] := '{0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}';
-  result text := '';
-  i integer := 0;
-BEGIN
-    for i in 1..5 loop
-       result := result || chars[1+random()*(array_length(chars, 1)-1)];
-    end loop;
-    result= TO_CHAR(NOW() :: DATE, 'DDMMYYYY') || result;
-UPDATE po SET invoice_no=result WHERE id=NEW.id;
-RETURN NEW;
-END $BODY$;
+## Development server
 
-CREATE TRIGGER invoice_no_generator_po AFTER INSERT ON po FOR EACH ROW
-EXECUTE PROCEDURE invoice_no_generator();
--------------------------------------------------------------------------------------------------------------------------
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+
+## Code scaffolding
+
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+
+## Build
+
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+
+## Running unit tests
+
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Running end-to-end tests
+
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+
+## Further help
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
